@@ -77,7 +77,10 @@ content %}
       {% for show in shows %}
       <li>
         <div class="item">
-          <h5>{{ show.artist.name }} playing at {{ show.venue.name }}</h5>
+          <h5>
+            {{ show.artist.name }} playing at {{ show.venue.name }} in {{
+            show.venue.city }}, {{ show.venue.state }}
+          </h5>
         </div>
       </li>
       {% endfor %}

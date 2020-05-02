@@ -213,20 +213,22 @@ def index():
 
 @app.route('/venues')
 def venues():
-    venues_data = []
+    areas = []
     # GET DISTINCT LIST OF CITIES AND STATES
-    cities = db.session.query(Venue.city, Venue.state).distinct(
+    locations = db.session.query(Venue.city, Venue.state).distinct(
         Venue.city, Venue.state)
     # GET AVAILABLE VENUES ID AND NAME FOR EACH CITY AND STATE
-    for city in cities:
-        venues_in_city = db.session.query(Venue.id, Venue.name).filter(
-            Venue.city == city[0]).filter(Venue.state == city[1])
-        venues_data.append({
-            "city": city[0],
-            "state": city[1],
-            "venues": venues_in_city
+    for location in locations:
+        city = location[0]
+        state = location[1]
+        venues = db.session.query(Venue.id, Venue.name).filter(
+            Venue.city == city).filter(Venue.state == state)
+        areas.append({
+            "city": city,
+            "state": state,
+            "venues": venues
         })
-    return render_template('pages/venues.html', areas=venues_data)
+    return render_template('pages/venues.html', areas=areas)
 
 
 @app.route('/venues/search', methods=['POST'])
