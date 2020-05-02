@@ -38,6 +38,11 @@ def get_genres(genres):
     return formatted_genres
 
 
+def format_genre_string(genres):
+    formatted_genre_string = ','.join(genres)
+    return formatted_genre_string
+
+
 def get_past_shows(shows):
     past_shows = list(filter(lambda x: x.start_time <
                              datetime.today(), shows))
@@ -276,7 +281,7 @@ def create_venue_submission():
         address = request.form['address']
         phone = request.form['phone']
         tmp_genres = request.form.getlist('genres')
-        genres = ','.join(tmp_genres)
+        genres = format_genre_string(tmp_genres)
         image_link = request.form['image_link']
         facebook_link = request.form['facebook_link']
         website = request.form['website']
@@ -389,7 +394,7 @@ def edit_artist_submission(artist_id):
         artist.state = request.form['state']
         artist.phone = request.form['phone']
         tmp_genres = request.form.getlist('genres')
-        artist.genres = ','.join(tmp_genres)
+        artist.genres = format_genre_string(tmp_genres)
         artist.image_link = request.form['image_link']
         artist.facebook_link = request.form['facebook_link']
         artist.website = request.form['website']
@@ -436,7 +441,7 @@ def edit_venue_submission(venue_id):
         venue.address = request.form['address']
         venue.phone = request.form['phone']
         tmp_genres = request.form.getlist('genres')
-        venue.genres = ','.join(tmp_genres)
+        venue.genres = format_genre_string(tmp_genres)
         venue.image_link = request.form['image_link']
         venue.facebook_link = request.form['facebook_link']
         venue.website = request.form['website']
@@ -479,7 +484,7 @@ def create_artist_submission():
         state = request.form['state']
         phone = request.form['phone']
         tmp_genres = request.form.getlist('genres')
-        genres = ','.join(tmp_genres)
+        genres = format_genre_string(tmp_genres)
         image_link = request.form['image_link']
         facebook_link = request.form['facebook_link']
         website = request.form['website']
