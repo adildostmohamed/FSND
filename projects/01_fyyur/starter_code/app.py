@@ -375,8 +375,10 @@ def show_artist(artist_id):
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
 def edit_artist(artist_id):
     artist = Artist.query.get_or_404(artist_id)
+    artist = artist.format()
     form = ArtistForm()
-    form.state.default = artist.state
+    form.state.default = artist['state']
+    form.genres.default = artist['genres']
     form.process()
     return render_template('forms/edit_artist.html', form=form, artist=artist)
 
@@ -421,8 +423,10 @@ def edit_artist_submission(artist_id):
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
 def edit_venue(venue_id):
     venue = Venue.query.get_or_404(venue_id)
+    venue = venue.format()
     form = VenueForm()
-    form.state.default = venue.state
+    form.state.default = venue['state']
+    form.genres.default = venue['genres']
     form.process()
     return render_template('forms/edit_venue.html', form=form, venue=venue)
 
