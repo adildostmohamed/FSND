@@ -3,11 +3,12 @@ block content %}
 <div class="row">
   <div class="col-sm-6">
     <h1 class="monospace">
-      {{ venue.name }}
+      {{ venue.name }} - <a href="/venues/{{venue.id}}/edit">Edit</a>
     </h1>
     <p class="subtitle">
-      ID: {{ venue.id }}
+      ID: {{ venue.id }} - <a href="/venues/{{venue.id}}/delete">Delete</a>
     </p>
+
     <div class="genres">
       {% for genre in venue.genres %}
       <span class="genre">{{ genre }}</span>

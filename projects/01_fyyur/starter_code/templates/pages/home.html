@@ -36,6 +36,7 @@ content %}
   </div>
 </div>
 <div class="row">
+  {% if artists|length > 0 %}
   <div class="col-sm-4">
     <h3>Latest artists</h3>
     <ul class="items">
@@ -52,6 +53,7 @@ content %}
     </ul>
     <a href="/artists">See all artists</a>
   </div>
+  {% endif %} {% if venues|length > 0 %}
   <div class="col-sm-4">
     <h3>Latest venues</h3>
     <ul class="items">
@@ -68,6 +70,7 @@ content %}
     </ul>
     <a href="/venues">See all venues</a>
   </div>
+  {% endif %} {% if shows|length > 0 %}
   <div class="col-sm-4">
     <h3>Latest shows</h3>
     <ul class="items">
@@ -81,5 +84,6 @@ content %}
     </ul>
     <a href="/shows">See all shows</a>
   </div>
+  {% endif %}
 </div>
 {% endblock %}

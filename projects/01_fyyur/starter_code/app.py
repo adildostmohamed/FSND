@@ -74,7 +74,7 @@ class Venue(db.Model):
     facebook_link = db.Column(db.String(120))
     seeking_talent = db.Column(db.Boolean, nullable=False)
     seeking_description = db.Column(db.String(120))
-    shows = db.relationship('Show', backref='venue')
+    shows = db.relationship('Show', cascade='all,delete', backref='venue')
 
     def format(self):
         upcoming_shows = get_upcoming_shows(self.shows)
@@ -82,7 +82,6 @@ class Venue(db.Model):
         past_shows = get_past_shows(self.shows)
         past_shows_count = len(past_shows)
         genres = get_genres(self.genres)
-        """ Returns a formatted dictionary for venue """
         return {
             'id': self.id,
             'name': self.name,
@@ -129,7 +128,6 @@ class Artist(db.Model):
         past_shows = get_past_shows(self.shows)
         past_shows_count = len(past_shows)
         genres = get_genres(self.genres)
-        """ Returns a formatted dictionary for artist """
         return {
             'id': self.id,
             'name': self.name,
@@ -162,7 +160,6 @@ class Show(db.Model):
         'Artist.id'), nullable=False)
 
     def format(self):
-        """ Returns a formatted dict for show """
         return {
             'id': self.id,
             'artist_id': self.artist_id,
@@ -303,14 +300,30 @@ def create_venue_submission():
         return redirect(url_for('index'))
 
 
-@app.route('/venues/<venue_id>', methods=['DELETE'])
+@app.route('/venues/<venue_id>/delete', methods=['GET'])
 def delete_venue(venue_id):
     # TODO: Complete this endpoint for taking a venue_id, and using
     # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
-
-    # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
-    # clicking that button delete it from the db then redirect the user to the homepage
-    return None
+    error = False
+    venue_name = ''
+    try:
+        venue = Venue.query.get_or_404(venue_id)
+        db.session.delete(venue)
+        db.session.commit()
+    except:
+        error = True
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        db.session.close()
+    if error:
+        flash('Could not delete Venue ' + venue_name +
+              ', please try again')
+        return redirect(url_for('show_venue', venue_id=venue_id))
+    else:
+        flash('Venue ' + venue_name +
+              ' was successfully deleted!')
+        return redirect(url_for('index'))
 
 #  Artists
 #  ----------------------------------------------------------------
